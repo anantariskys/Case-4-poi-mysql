@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Case 4</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.3/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div class="w-full bg-slate-200 ">
+      <div id="modal" class="absolute hidden w-full h-screen top-0 left-0 bg-black bg-opacity-30 z-10">
+        <div id="closeModal" class="p-5 bg-neutral-100 text-xl font-bold absolute top-5 right-5 rounded ">X</div>
+        <form action="" method="post" id="formPost" class="mx-auto w-96 flex flex-col gap-3 bg-slate-200  z-50 rounded-lg p-3 fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
+          <h1 class="text-4xl font-semibold text-center">Tambah Lokasi</h1>
+          <div class="flex flex-col gap-1">
+            <label class="text-2xl font-semibold" for="nama">Nama</label>
+            <input  required type="text" name="nama" class="p-1 rounded" placeholder="masukkan nama tempat" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label class="text-2xl font-semibold" for="deskripsi">Deksripsi</label>
+            <input  required type="text" name="deskripsi" class="p-1 rounded" placeholder="masukkan deskripsi tempat" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label class="text-2xl font-semibold" for="kategori">Kategori</label>
+            <input  required type="text" name="kategori" class="p-1 rounded" placeholder="masukkan  kategori" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label class="text-2xl font-semibold" for="rating">Rating</label>
+            <input  required type="number" min="0" max="100" name="rating" class="p-1 rounded" placeholder="masukkan rating" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label class="text-2xl font-semibold" for="alamat">Alamat</label>
+            <input  required type="text" name="alamat" class="p-1 rounded" placeholder="masukkan alamat" />
+          </div>
+
+          <button id="submitPost" class="p-2 rounded bg-blue-400 mt-5">Submit</button>
+        </form>
+      </div>
+      <div id="modalUpdate" class="absolute hidden w-full h-screen top-0 left-0 bg-black bg-opacity-30 z-10">
+        <div id="closeModalUpdate" class="p-5 bg-neutral-100 text-xl font-bold absolute top-5 right-5 rounded ">X</div>
+        <form method="post" id="formUpdate" class="mx-auto w-96 flex flex-col gap-3 bg-slate-200  z-50 rounded-lg p-3 fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
+          <h1 class="text-4xl font-semibold text-center">Update Lokasi</h1>
+          <div class="flex flex-col gap-1">
+            <label class="text-2xl font-semibold" for="nama">Nama</label>
+            <input type="text" name="newNama" class="p-1 rounded" placeholder="masukkan nama tempat" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label class="text-2xl font-semibold" for="deskripsi">Deksripsi</label>
+            <input type="text" name="newDeskripsi" class="p-1 rounded" placeholder="masukkan deskripsi tempat" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label class="text-2xl font-semibold" for="kategori">Kategori</label>
+            <input type="text" name="newKategori" class="p-1 rounded" placeholder="masukkan  kategori" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label class="text-2xl font-semibold" for="rating">Rating</label>
+            <input type="number" min="0" max="100" name="newRating" class="p-1 rounded" placeholder="masukkan rating" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label class="text-2xl font-semibold" for="alamat">Alamat</label>
+            <input type="text" name="newAlamat" class="p-1 rounded" placeholder="masukkan alamat" />
+          </div>
+
+          <button  id="submitUpdate" class="p-2 rounded bg-blue-400 mt-5">Submit</button>
+        </form>
+      </div>
+      <div id="modalDelete" class="absolute hidden w-full h-screen top-0 left-0 bg-black bg-opacity-30 z-10">
+        <form id="formDelete" action="" method="post" class="mx-auto w-96 flex flex-col gap-3 bg-slate-200  z-50 rounded-lg p-3 fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
+         <h1 class="text-2xl font-bold text-red-500">Yakin ingin hapus ?</h1>
+          <div class="w-full flex justify-between gap-3">
+            <button type="submit" class="p-2 rounded bg-green-500 mt-5 w-full ">Ya</button>
+            <div id="modalclosebutton" class="p-2 rounded bg-red-400 mt-5 w-full text-center ">Tidak</div>
+
+          </div>
+        </form>
+      </div>
+   
+      <div class="container mx-auto relative z-0 p-5 h-screen  flex">
+        <aside class="w-2/6 p-3 bg-white overflow-auto">
+          <div class="overflow-y-auto">
+            <table class="table table-xs ">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Nama</th>
+                  <th>Deskripsi</th>
+                  <th>Kategori</th>
+                  <th>Rating</th>
+                  <th>Alamat</th>
+             
+                </tr>
+               
+              </thead>
+              <tbody id="tableData" class="  ">
+             
+               
+              
+              </tfoot>
+            </table>
+          </div>
+        </aside>
+
+        <div class="w-4/6 flex items-center  top-0">
+          <div id="map" class="w-full aspect-[16/12]"></div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="fetch.js"></script>
+    <script src="leaflet.js"></script>
+  </body>
+</html>
