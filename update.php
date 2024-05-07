@@ -17,19 +17,15 @@ $sql = "UPDATE poi SET latitude = :newLat, longitude = :newLng";
 if (!empty($newNama)) {
     $sql .= ", nama = :nama";
 }
-
 if (!empty($newDeskripsi)) {
     $sql .= ", deskripsi = :deskripsi";
 }
-
 if (!empty($newKategori)) {
     $sql .= ", kategori = :kategori";
 }
-
 if (!empty($newRating)) {
     $sql .= ", rating = :rating";
 }
-
 if (!empty($newAlamat)) {
     $sql .= ", alamat = :alamat";
 }

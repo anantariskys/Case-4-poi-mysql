@@ -27,8 +27,6 @@ const closeModal = document.getElementById('closeModal')
 closeModal.addEventListener('click', (e) => {
     modal.classList.toggle('hidden')
 })
-let latitude;
-let longitude;
 
 function onMapClick(e) {
     const modal = document.getElementById('modal')
@@ -48,7 +46,7 @@ const formPost = document.getElementById('formPost');
 formPost.addEventListener('submit', async (e) => {
     e.preventDefault();
     modal.classList.toggle('hidden')
-
+    
 
 
     const formData = new FormData(e.target);
@@ -81,6 +79,10 @@ formPost.addEventListener('submit', async (e) => {
 const formUpdate = document.getElementById('formUpdate');
 const modalUpdate = document.getElementById('modalUpdate');
 const submitUpdate = document.getElementById('submitUpdate')
+let latitude;
+let longitude;
+let initialLatitude;
+let initialLongitude;
 submitUpdate.addEventListener('click', (e) => {
     let nama = document.getElementsByName('newNama')[0].value;
     let deskripsi = document.getElementsByName('newDeskripsi')[0].value;
@@ -100,10 +102,6 @@ submitUpdate.addEventListener('click', (e) => {
     formData.append('kategori', kategori);
     formData.append('rating', rating);
     formData.append('alamat', alamat);
-
-    for (const [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-    }
 
     fetch('update.php', {
         method: 'POST',

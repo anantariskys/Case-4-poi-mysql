@@ -60,8 +60,7 @@ function fetchData() {
           const position = marker.getLatLng();
           initialLatitude = position.lat;
           initialLongitude = position.lng;
-          console.log(initialLatitude);
-          console.log(initialLongitude);
+ 
         });
         marker.on('dragend', function (e) {
           const position = marker.getLatLng();
